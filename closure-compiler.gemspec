@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name      = 'closure-compiler'
-  s.version   = '0.1.1'            # Keep version in sync with closure-compiler.rb
+  s.version   = '0.1.2'            # Keep version in sync with closure-compiler.rb
   s.date      = '2009-11-18'
 
   s.homepage    = "http://github.com/documentcloud/closure-compiler/"
@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
                          '--exclude'  << 'test' <<
                          '--all'
 
-  s.files = Dir['lib/**/*', 'closure-compiler.gemspec', 'README.textile', 'LICENSE', 'COPYING']
+  s.files = Dir['lib/**/*', 'vendor/**/*', 'closure-compiler.gemspec', 'README.textile', 'LICENSE', 'COPYING']
 
 end
