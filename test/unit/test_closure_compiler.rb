@@ -33,4 +33,10 @@ class ClosureCompilerTest < Test::Unit::TestCase
     assert result == COMPILED_ADVANCED
   end
 
+  def test_jar_and_java_specifiation
+    jar = Dir['vendor/closure-compiler-*.jar'].first
+    compiler = Compiler.new(:java => '/usr/bin/java', :jar_file => jar)
+    assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
+  end
+
 end
