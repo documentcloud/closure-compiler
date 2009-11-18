@@ -12,17 +12,17 @@ h2. Usage
 
 The @Closure::Compiler@ has a single method, @compile@, which can be passed a string or an open @IO@ object, and returns the compiled JavaScript. The result is returned as a string, or, if a block is passed, yields as an @IO@ object for streaming writes.
 
-  require 'rubygems'
-  require 'closure-compiler'
-  Closure::Compiler.new.compile(File.open('underscore.js', 'r'))
+      require 'rubygems'
+      require 'closure-compiler'
+      Closure::Compiler.new.compile(File.open('underscore.js', 'r'))
   
-  => "(function(){var j=this,m=j._;function i(a){......
+      => "(function(){var j=this,m=j._;function i(a){......
     
 When creating a @Closure::Compiler@, you can pass "any options that the command-line compiler accepts":http://code.google.com/closure/compiler/docs/gettingstarted_app.html, to the initializer and they'll be forwarded. For example, to set the compilation level up a notch:
 
-  closure = Closure::Compiler.new(:compilation_level => 'ADVANCED_OPTIMIZATIONS')
-  closure.compile(File.open('underscore.js', 'r'))
+      closure = Closure::Compiler.new(:compilation_level => 'ADVANCED_OPTIMIZATIONS')
+      closure.compile(File.open('underscore.js', 'r'))
   
-  => "(function(){var j=this,m=j.h;function i(a){......
+      => "(function(){var j=this,m=j.h;function i(a){......
 
 The default values of all the compiler flags are identical to the command-line version. The default *compilation_level* is "*SIMPLE_OPTIMIZATIONS*".
