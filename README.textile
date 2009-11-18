@@ -6,7 +6,9 @@ The Closure Compiler's _2009-11-13_ JAR-file is included with the gem, so you'll
 
 h2. Installation
 
+<pre>
   sudo gem install closure-compressor --source http://gemcutter.org
+</pre>
   
 h2. Usage
 
