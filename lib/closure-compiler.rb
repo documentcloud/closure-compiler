@@ -1,4 +1,4 @@
-require 'closure/compiler'
+require File.dirname(__FILE__) + '/closure/compiler'
 
 module Closure
 

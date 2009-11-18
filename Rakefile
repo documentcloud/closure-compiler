@@ -1,3 +1,11 @@
+desc 'Run all tests'
+task :test do
+  $LOAD_PATH.unshift(File.expand_path('test'))
+  require 'redgreen' if Gem.available?('redgreen')
+  require 'test/unit'
+  Dir['test/**/test_*.rb'].each {|test| require test }
+end
+
 namespace :gem do
 
   desc 'Build and install the closure-compiler gem'
