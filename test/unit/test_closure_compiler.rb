@@ -39,4 +39,8 @@ class ClosureCompilerTest < Test::Unit::TestCase
     assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
   end
 
+  def test_permissions
+    assert File.executable?(COMPILER_JAR)
+  end
+
 end
