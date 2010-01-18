@@ -1,4 +1,6 @@
 desc 'Run all tests'
+
+task :default => :test
 task :test do
   $LOAD_PATH.unshift(File.expand_path('test'))
   require 'redgreen' if Gem.available?('redgreen')

@@ -6,7 +6,7 @@ class ClosureCompilerTest < Test::Unit::TestCase
 
   COMPILED_WHITESPACE = "window.hello=function(name){return console.log(\"hello \"+name)};hello.squared=function(num){return num*num};hello(\"world\");\n"
   COMPILED_SIMPLE     = "window.hello=function(a){return console.log(\"hello \"+a)};hello.squared=function(a){return a*a};hello(\"world\");\n"
-  COMPILED_ADVANCED   = "window.a=function(a){return console.log(\"hello \"+a)};hello.b=function(a){return a*a};hello(\"world\");\n"
+  COMPILED_ADVANCED   = "window.a=function(b){return console.log(\"hello \"+b)};hello.b=function(b){return b*b};hello(\"world\");\n"
 
   def test_whitespace_compression
     js = Compiler.new(:compilation_level => "WHITESPACE_ONLY").compile(ORIGINAL)
