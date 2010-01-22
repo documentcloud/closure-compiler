@@ -43,4 +43,10 @@ class ClosureCompilerTest < Test::Unit::TestCase
     assert File.executable?(COMPILER_JAR)
   end
 
+  def test_compilation_error
+    assert_raises Closure::CompilationError do
+      Compiler.new.compile('++')
+    end
+  end
+
 end

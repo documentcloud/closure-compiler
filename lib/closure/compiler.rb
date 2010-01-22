@@ -1,7 +1,9 @@
 require 'open3'
 require 'stringio'
+require 'tempfile'
 
 module Closure
+  class CompilationError < StandardError; end
 
   # The Closure::Compiler is a basic wrapper around the actual JAR. There's not
   # much to see here.
@@ -18,16 +20,20 @@ module Closure
     # JavaScript as a string or yields an IO object containing the response to a
     # block, for streaming.
     def compile(io)
-      Open3.popen3(*command) do |stdin, stdout, stderr|
-        if io.respond_to? :read
-          while buffer = io.read(4096) do
-            stdin.write(buffer)
+      Tempfile.open('closure-compiler-stderr') do |stderr|
+        result = IO.popen("#{command} 2> #{stderr.path}", 'w+') do |java_io|
+          if io.respond_to? :read
+            while buffer = io.read(4096) do
+              java_io.write(buffer)
+            end
+          else
+            java_io.write(io.to_s)
           end
-        else
-          stdin.write(io.to_s)
+          java_io.close_write
+          block_given? ? yield(java_io) : java_io.read
         end
-        stdin.close
-        block_given? ? yield(stdout) : stdout.read
+        raise CompilationError, File.read(stderr.path) unless $?.success?
+        return result
       end
     end
     alias_method :compress, :compile
@@ -41,7 +47,7 @@ module Closure
     end
 
     def command
-      [@java, '-jar', @jar, @options].flatten
+      [@java, '-jar', @jar, @options].flatten.join(' ')
     end
 
   end
