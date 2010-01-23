@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name      = 'closure-compiler'
-  s.version   = '0.1.6'            # Keep version in sync with closure-compiler.rb
-  s.date      = '2010-1-18'
+  s.version   = '0.1.7'            # Keep version in sync with closure-compiler.rb
+  s.date      = '2010-1-23'
 
   s.homepage    = "http://github.com/documentcloud/closure-compiler/"
   s.summary     = "Ruby Wrapper for the Google Closure Compiler"
@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
   s.rdoc_options      << '--title'    << 'Ruby Closure Compiler' <<
                          '--exclude'  << 'test' <<
                          '--all'
+
+  s.add_dependency 'popen4', ['>= 0.1.2']
 
   s.files = Dir['lib/**/*', 'vendor/**/*', 'closure-compiler.gemspec', 'README.textile', 'LICENSE', 'COPYING']
 

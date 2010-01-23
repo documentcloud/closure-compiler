@@ -1,7 +1,11 @@
-require 'open3'
+require 'rubygems'
+require 'popen4'
 require 'stringio'
 
 module Closure
+
+  # We raise a Closure::Error when compilation fails for any reason.
+  class Error < StandardError; end
 
   # The Closure::Compiler is a basic wrapper around the actual JAR. There's not
   # much to see here.
@@ -18,7 +22,8 @@ module Closure
     # JavaScript as a string or yields an IO object containing the response to a
     # block, for streaming.
     def compile(io)
-      Open3.popen3(*command) do |stdin, stdout, stderr|
+      result, error = nil, nil
+      status = POpen4.popen4(*command) do |stdout, stderr, stdin, pid|
         if io.respond_to? :read
           while buffer = io.read(4096) do
             stdin.write(buffer)
@@ -27,8 +32,11 @@ module Closure
           stdin.write(io.to_s)
         end
         stdin.close
-        block_given? ? yield(stdout) : stdout.read
+        result = block_given? ? yield(stdout) : stdout.read
+        error = stderr.read
       end
+      raise Error, error unless status.success?
+      result
     end
     alias_method :compress, :compile
 
@@ -41,7 +49,7 @@ module Closure
     end
 
     def command
-      [@java, '-jar', @jar, @options].flatten
+      [@java, '-jar', @jar, @options].flatten.join(' ')
     end
 
   end

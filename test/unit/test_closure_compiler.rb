@@ -39,6 +39,15 @@ class ClosureCompilerTest < Test::Unit::TestCase
     assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
   end
 
+  def test_exceptions
+    assert_raises(Closure::Error) do
+      Compiler.new.compile('1++')
+    end
+    assert_raises(Closure::Error) do
+      Compiler.new.compile('obj = [1 2, 3]')
+    end
+  end
+
   def test_permissions
     assert File.executable?(COMPILER_JAR)
   end

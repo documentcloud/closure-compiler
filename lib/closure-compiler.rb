@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/closure/compiler')
 
 module Closure
 
-  VERSION           = "0.1.6"
+  VERSION           = "0.1.7"
 
   COMPILER_VERSION  = "20091217"
 
