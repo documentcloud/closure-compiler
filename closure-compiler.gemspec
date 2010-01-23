@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   EOS
 
   s.rubyforge_project = "closure-compiler"
-  s.authors           = ['Jeremy Ashkenas']
+  s.authors           = ['Jeremy Ashkenas', 'Jordan Brough']
   s.email             = 'jeremy@documentcloud.org'
 
   s.require_paths     = ['lib']
