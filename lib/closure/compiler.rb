@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'POpen4'
+require 'popen4'
 require 'stringio'
 
 module Closure
