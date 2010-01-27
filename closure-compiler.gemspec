@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
                          '--exclude'  << 'test' <<
                          '--all'
 
-  s.add_dependency 'popen4', ['>= 0.1.2']
+  s.add_dependency 'POpen4', ['>= 0.1.4']
 
   s.files = Dir['lib/**/*', 'vendor/**/*', 'closure-compiler.gemspec', 'README.textile', 'LICENSE', 'COPYING']
 
