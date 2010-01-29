@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'popen4'
+require 'stringio'
 
 module Closure
 
@@ -31,8 +32,10 @@ module Closure
           stdin.write(io.to_s)
         end
         stdin.close
-        result = block_given? ? yield(stdout) : stdout.read
-        error = stderr.read
+        out_thread = Thread.new { result = stdout.read }
+        err_thread = Thread.new { error  = stderr.read }
+        out_thread.join and err_thread.join
+        yield(StringIO.new(result)) if block_given?
       end
       raise Error, error unless status.success?
       result
