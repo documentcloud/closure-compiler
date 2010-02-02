@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name      = 'closure-compiler'
-  s.version   = '0.1.9'            # Keep version in sync with closure-compiler.rb
+  s.version   = '0.2.0'            # Keep version in sync with closure-compiler.rb
   s.date      = '2010-1-27'
 
   s.homepage    = "http://github.com/documentcloud/closure-compiler/"

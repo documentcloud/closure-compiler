@@ -2,9 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/closure/compiler')
 
 module Closure
 
-  VERSION           = "0.1.9"
+  VERSION           = "0.2.0"
 
-  COMPILER_VERSION  = "20091217"
+  COMPILER_VERSION  = "20100201"
 
   JAVA_COMMAND      = 'java'
 
