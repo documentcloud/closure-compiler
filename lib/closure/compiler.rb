@@ -1,7 +1,3 @@
-require 'rubygems'
-require 'popen4'
-require 'stringio'
-
 module Closure
 
   # We raise a Closure::Error when compilation fails for any reason.
@@ -23,7 +19,7 @@ module Closure
     # block, for streaming.
     def compile(io)
       result, error = nil, nil
-      status = POpen4.popen4(*command) do |stdout, stderr, stdin, pid|
+      pid = Closure::Popen.popen(*command) do |stdin, stdout, stderr|
         if io.respond_to? :read
           while buffer = io.read(4096) do
             stdin.write(buffer)
@@ -37,7 +33,8 @@ module Closure
         out_thread.join and err_thread.join
         yield(StringIO.new(result)) if block_given?
       end
-      raise Error, error unless status.success?
+      Process.waitpid pid
+      raise Error, error unless $?.success?
       result
     end
     alias_method :compress, :compile
