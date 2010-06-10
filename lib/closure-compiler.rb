@@ -2,7 +2,7 @@ module Closure
 
   VERSION           = "0.3.0"
 
-  COMPILER_VERSION  = "20100201"
+  COMPILER_VERSION  = "20100514"
 
   JAVA_COMMAND      = 'java'
 
