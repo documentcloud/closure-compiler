@@ -19,7 +19,7 @@ module Closure
     # block, for streaming.
     def compile(io)
       result, error = nil, nil
-      pid = Closure::Popen.popen(*command) do |stdin, stdout, stderr|
+      Closure::Popen.popen(command) do |stdin, stdout, stderr|
         if io.respond_to? :read
           while buffer = io.read(4096) do
             stdin.write(buffer)
@@ -28,12 +28,17 @@ module Closure
           stdin.write(io.to_s)
         end
         stdin.close
-        out_thread = Thread.new { result = stdout.read }
-        err_thread = Thread.new { error  = stderr.read }
-        out_thread.join and err_thread.join
+        if Closure::Popen::WINDOWS
+          stderr.close
+          result = stdout.read
+          error = "Stderr cannot be read on Windows."
+        else
+          out_thread = Thread.new { result = stdout.read }
+          err_thread = Thread.new { error  = stderr.read }
+          out_thread.join and err_thread.join
+        end
         yield(StringIO.new(result)) if block_given?
       end
-      Process.waitpid pid
       raise Error, error unless $?.success?
       result
     end
@@ -48,7 +53,7 @@ module Closure
     end
 
     def command
-      [@java, '-jar', @jar, @options].flatten.join(' ')
+      [@java, '-jar', "\"#{@jar}\"", @options].flatten.join(' ')
     end
 
   end

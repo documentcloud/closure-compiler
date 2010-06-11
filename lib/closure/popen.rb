@@ -4,37 +4,56 @@ module Closure
   # grandchild process, and returns the pid of the external process.
   module Popen
 
-    def self.popen(*cmd)
-      # pipe[0] for read, pipe[1] for write
-      pw, pr, pe = IO.pipe, IO.pipe, IO.pipe
+    WINDOWS = RUBY_PLATFORM.match(/mswin32/)
+    if WINDOWS
+      require 'rubygems'
+      require 'win32/open3'
+    end
 
-      pid = fork {
-        pw[1].close
-        STDIN.reopen(pw[0])
-        pw[0].close
-
-        pr[0].close
-        STDOUT.reopen(pr[1])
-        pr[1].close
-
-        pe[0].close
-        STDERR.reopen(pe[1])
-        pe[1].close
-
-        exec(*cmd)
-      }
-
-      pw[0].close
-      pr[1].close
-      pe[1].close
-      pi = [pw[1], pr[0], pe[0]]
-      pw[1].sync = true
-      begin
-        if block_given?
-          yield(*pi)
+    def self.popen(cmd)
+      pid = nil
+      if WINDOWS
+        error, pid = nil, nil
+        Open4.popen4(cmd) do |stdin, stdout, stderr, win_pid|
+          yield(stdin, stdout, stderr) if block_given?
+          stdout.read unless stdout.closed? or stdout.eof?
+          unless stderr.closed?
+            stderr.rewind
+            error = stderr.read
+          end
+          pid = win_pid
         end
-      ensure
-        pi.each{|p| p.close unless p.closed?}
+      else
+        # pipe[0] for read, pipe[1] for write
+        pw, pr, pe = IO.pipe, IO.pipe, IO.pipe
+
+        pid = fork {
+          pw[1].close
+          STDIN.reopen(pw[0])
+          pw[0].close
+
+          pr[0].close
+          STDOUT.reopen(pr[1])
+          pr[1].close
+
+          pe[0].close
+          STDERR.reopen(pe[1])
+          pe[1].close
+
+          exec(cmd)
+        }
+
+        pw[0].close
+        pr[1].close
+        pe[1].close
+        pi = [pw[1], pr[0], pe[0]]
+        pw[1].sync = true
+        begin
+          yield(*pi) if block_given?
+        ensure
+          pi.each{|p| p.close unless p.closed?}
+        end
+        Process.waitpid pid
       end
       pid
     end

@@ -34,10 +34,12 @@ class ClosureCompilerTest < Test::Unit::TestCase
   end
 
   def test_jar_and_java_specifiation
-    jar = Dir['vendor/closure-compiler-*.jar'].first
-    java = `which java`.strip
-    compiler = Compiler.new(:java => java, :jar_file => jar)
-    assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
+    if !RUBY_PLATFORM.match(/mswin32/)
+      jar = Dir['vendor/closure-compiler-*.jar'].first
+      java = `which java`.strip
+      compiler = Compiler.new(:java => java, :jar_file => jar)
+      assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
+    end
   end
 
   def test_exceptions
