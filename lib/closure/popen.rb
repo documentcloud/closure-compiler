@@ -4,7 +4,7 @@ module Closure
   # grandchild process, and returns the pid of the external process.
   module Popen
 
-    WINDOWS = RUBY_PLATFORM.match(/mswin32/)
+    WINDOWS = RUBY_PLATFORM.match(/(win|w)32$/)
     if WINDOWS
       require 'rubygems'
       require 'win32/open3'
