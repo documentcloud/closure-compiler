@@ -19,7 +19,7 @@ module Closure
     # block, for streaming.
     def compile(io)
       result, error = nil, nil
-      Closure::Popen.popen(command) do |stdin, stdout, stderr|
+      status = Closure::Popen.popen(command) do |stdin, stdout, stderr|
         if io.respond_to? :read
           while buffer = io.read(4096) do
             stdin.write(buffer)
@@ -39,7 +39,7 @@ module Closure
         end
         yield(StringIO.new(result)) if block_given?
       end
-      raise Error, error unless $?.success?
+      raise Error, error unless status.success?
       result
     end
     alias_method :compress, :compile

@@ -34,7 +34,7 @@ class ClosureCompilerTest < Test::Unit::TestCase
   end
 
   def test_jar_and_java_specifiation
-    if !RUBY_PLATFORM.match(/mswin32/)
+    if !Closure::Popen::WINDOWS
       jar = Dir['vendor/closure-compiler-*.jar'].first
       java = `which java`.strip
       compiler = Compiler.new(:java => java, :jar_file => jar)

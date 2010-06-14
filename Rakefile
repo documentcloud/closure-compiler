@@ -3,7 +3,7 @@ desc 'Run all tests'
 task :default => :test
 task :test do
   $LOAD_PATH.unshift(File.expand_path('test'))
-  require 'redgreen' if Gem.available?('redgreen')
+  require 'redgreen' if Gem.available?('redgreen') and RUBY_VERSION < "1.9"
   require 'test/unit'
   Dir['test/**/test_*.rb'].each {|test| require test }
 end

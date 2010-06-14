@@ -4,24 +4,28 @@ module Closure
   # grandchild process, and returns the pid of the external process.
   module Popen
 
-    WINDOWS = RUBY_PLATFORM.match(/(win|w)32$/)
+    WINDOWS  = RUBY_PLATFORM.match(/(win|w)32$/)
+    ONE_NINE = RUBY_VERSION >= "1.9"
     if WINDOWS
-      require 'rubygems'
-      require 'win32/open3'
+      if ONE_NINE
+        require 'open3'
+      else
+        require 'rubygems'
+        require 'win32/open3'
+      end
     end
 
     def self.popen(cmd)
-      pid = nil
       if WINDOWS
-        error, pid = nil, nil
-        Open4.popen4(cmd) do |stdin, stdout, stderr, win_pid|
+        error = nil
+        Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thread|
           yield(stdin, stdout, stderr) if block_given?
           stdout.read unless stdout.closed? or stdout.eof?
           unless stderr.closed?
             stderr.rewind
             error = stderr.read
           end
-          pid = win_pid
+          return wait_thread.value if wait_thread.is_a? Thread
         end
       else
         # pipe[0] for read, pipe[1] for write
@@ -55,7 +59,7 @@ module Closure
         end
         Process.waitpid pid
       end
-      pid
+      $?
     end
 
   end
