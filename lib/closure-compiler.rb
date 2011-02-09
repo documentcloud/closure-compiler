@@ -5,6 +5,8 @@ module Closure
   COMPILER_VERSION  = "20110119"
 
   JAVA_COMMAND      = 'java'
+  
+  UGLIFY_PATH       = '~/local/node/bin/uglifyjs'
 
   COMPILER_ROOT     = File.expand_path(File.dirname(__FILE__))
 

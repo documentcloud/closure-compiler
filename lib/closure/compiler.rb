@@ -9,9 +9,12 @@ module Closure
 
     # When you create a Compiler, pass in the flags and options.
     def initialize(options={})
-      @java     = options.delete(:java)     || JAVA_COMMAND
-      @jar      = options.delete(:jar_file) || COMPILER_JAR
-      @options  = serialize_options(options)
+      @compiler_type = options.delete(:use) || :java
+      
+      @uglify_path   = options.delete(:uglify_path) || UGLIFY_PATH
+      @java          = options.delete(:java)        || JAVA_COMMAND
+      @jar           = options.delete(:jar_file)    || COMPILER_JAR
+      @options       = serialize_options(options)
     end
 
     # Can compile a JavaScript string or open IO object. Returns the compiled
@@ -53,7 +56,15 @@ module Closure
     end
 
     def command
+      (@compiler_type == :java) ? java_command : uglify_command
+    end
+
+    def java_command
       [@java, '-jar', "\"#{@jar}\"", @options].flatten.join(' ')
+    end
+    
+    def uglify_command
+      [@uglify_path, @options].flatten.join(' ')
     end
 
   end
