@@ -8,10 +8,10 @@ module Closure
 
   COMPILER_ROOT     = File.expand_path(File.dirname(__FILE__))
 
-  COMPILER_JAR      = COMPILER_ROOT + "/../vendor/closure-compiler-#{COMPILER_VERSION}.jar"
+  COMPILER_JAR      = File.join(COMPILER_ROOT, "closure-compiler-#{COMPILER_VERSION}.jar")
 
 end
 
 require 'stringio'
-require Closure::COMPILER_ROOT + '/closure/popen'
-require Closure::COMPILER_ROOT + '/closure/compiler'
+require File.join(Closure::COMPILER_ROOT, 'closure/popen')
+require File.join(Closure::COMPILER_ROOT, 'closure/compiler')
