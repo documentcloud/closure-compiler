@@ -13,5 +13,4 @@ module Closure
 end
 
 require 'stringio'
-require 'closure/popen'
 require 'closure/compiler'
