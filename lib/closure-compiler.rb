@@ -13,5 +13,4 @@ module Closure
 end
 
 require 'stringio'
-require File.join(Closure::COMPILER_ROOT, 'closure/popen')
-require File.join(Closure::COMPILER_ROOT, 'closure/compiler')
+require 'closure/compiler'

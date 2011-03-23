@@ -1,3 +1,5 @@
+require 'closure/popen'
+
 module Closure
 
   # We raise a Closure::Error when compilation fails for any reason.

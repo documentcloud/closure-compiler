@@ -1,4 +1,4 @@
-require 'lib/closure-compiler'
+require 'closure-compiler'
 
 class Test::Unit::TestCase
   include Closure
