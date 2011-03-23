@@ -13,5 +13,5 @@ module Closure
 end
 
 require 'stringio'
-require Closure::COMPILER_ROOT + '/closure/popen'
-require Closure::COMPILER_ROOT + '/closure/compiler'
+require 'closure/popen'
+require 'closure/compiler'
