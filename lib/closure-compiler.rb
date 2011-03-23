@@ -8,7 +8,7 @@ module Closure
 
   COMPILER_ROOT     = File.expand_path(File.dirname(__FILE__))
 
-  COMPILER_JAR      = COMPILER_ROOT + "/../vendor/closure-compiler-#{COMPILER_VERSION}.jar"
+  COMPILER_JAR      = File.join(COMPILER_ROOT, "closure-compiler-#{COMPILER_VERSION}.jar")
 
 end
 
