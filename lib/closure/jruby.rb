@@ -53,8 +53,6 @@ module Closure
       @options  = serialize_options(opts)
     end
 
-    alias_method :pure_compile, :compile
-
     def compile(io)
       runner = MyClosureRunner.new(io, @options)
       status = runner.doRun
