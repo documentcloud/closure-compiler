@@ -14,3 +14,5 @@ end
 
 require 'stringio'
 require 'closure/compiler'
+require 'closure/jruby' if defined?(JRUBY_VERSION)
+
