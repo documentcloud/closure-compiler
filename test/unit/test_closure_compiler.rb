@@ -34,12 +34,10 @@ class ClosureCompilerTest < Test::Unit::TestCase
   end
 
   def test_jar_and_java_specifiation
-    if !Closure::Popen::WINDOWS
-      jar = Dir['vendor/closure-compiler-*.jar'].first
-      java = `which java`.strip
-      compiler = Compiler.new(:java => java, :jar_file => jar)
-      assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
-    end
+    jar = Dir['vendor/closure-compiler-*.jar'].first
+    java = `which java`.strip
+    compiler = Compiler.new(:java => java, :jar_file => jar)
+    assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
   end
 
   def test_exceptions

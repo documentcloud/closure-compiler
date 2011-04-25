@@ -1,4 +1,5 @@
-require 'closure/popen'
+require 'stringio'
+require 'tempfile'
 
 module Closure
 
@@ -20,28 +21,26 @@ module Closure
     # JavaScript as a string or yields an IO object containing the response to a
     # block, for streaming.
     def compile(io)
-      result, error = nil, nil
-      status = Closure::Popen.popen(command) do |stdin, stdout, stderr|
-        if io.respond_to? :read
-          while buffer = io.read(4096) do
-            stdin.write(buffer)
-          end
-        else
-          stdin.write(io.to_s)
+      tempfile = Tempfile.new('closure_compiler')
+      if io.respond_to? :read
+        while buffer = io.read(4096) do
+          tempfile.write(buffer)
         end
-        stdin.close
-        if Closure::Popen::WINDOWS
-          stderr.close
-          result = stdout.read
-          error = "Stderr cannot be read on Windows."
-        else
-          out_thread = Thread.new { result = stdout.read }
-          err_thread = Thread.new { error  = stderr.read }
-          out_thread.join and err_thread.join
-        end
-        yield(StringIO.new(result)) if block_given?
+      else
+        tempfile.write(io.to_s)
       end
-      raise Error, error unless status.success?
+      tempfile.close
+
+      begin
+        result = `#{command} --js #{tempfile.path}`
+      rescue Exception
+        raise Error, "compression failed"
+      end
+      unless $?.exitstatus.zero?
+        raise Error, result
+      end
+
+      yield(StringIO.new(result)) if block_given?
       result
     end
     alias_method :compress, :compile
