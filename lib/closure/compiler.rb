@@ -51,7 +51,13 @@ module Closure
 
     # Serialize hash options to the command-line format.
     def serialize_options(options)
-      options.map {|k, v| ["--#{k}", v.to_s] }.flatten
+      options.map do |k, v|
+        if (v.is_a?(Array))
+          v.map {|v2| ["--#{k}", v2.to_s]}
+        else
+          ["--#{k}", v.to_s]
+        end
+      end.flatten
     end
 
     def command

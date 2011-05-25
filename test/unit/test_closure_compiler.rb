@@ -60,4 +60,13 @@ class ClosureCompilerTest < Test::Unit::TestCase
     assert File.executable?(COMPILER_JAR)
   end
 
+  def test_serialize_options
+    assert_equal ["--externs",  "library1.js", "--compilation_level", "ADVANCED_OPTIMIZATIONS"], Closure::Compiler.new.send(:serialize_options, 'externs' => 'library1.js', "compilation_level" => "ADVANCED_OPTIMIZATIONS")
+  end
+  
+  def test_serialize_options_for_arrays
+    compiler = Closure::Compiler.new('externs' => ['library1.js', "library2.js"])
+    assert_equal ["--externs", "library1.js", "--externs", "library2.js"], compiler.send(:serialize_options, 'externs' => ['library1.js', "library2.js"])
+  end
+
 end
