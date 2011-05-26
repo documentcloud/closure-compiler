@@ -29,12 +29,14 @@ module Closure
       else
         tempfile.write(io.to_s)
       end
-      tempfile.close
+      tempfile.flush
 
       begin
         result = `#{command} --js #{tempfile.path}`
       rescue Exception
         raise Error, "compression failed"
+      ensure
+        tempfile.close!
       end
       unless $?.exitstatus.zero?
         raise Error, result
