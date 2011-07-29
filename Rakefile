@@ -1,12 +1,9 @@
-desc 'Run all tests'
+require "rake/testtask"
 
-task :default => :test
-task :test do
-  $LOAD_PATH.unshift(File.expand_path('lib'))
-  $LOAD_PATH.unshift(File.expand_path('test'))
-  require 'redgreen' if Gem.available?('redgreen') and RUBY_VERSION < "1.9"
-  require 'test/unit'
-  Dir['test/**/test_*.rb'].each {|test| require test }
+Rake::TestTask.new do |t|
+  t.libs += ["lib", "test"]
+  t.test_files = FileList["test/**/*_test.rb"]
+  t.verbose = true
 end
 
 namespace :gem do
@@ -23,3 +20,5 @@ namespace :gem do
   end
 
 end
+
+task :default => :test
