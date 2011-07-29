@@ -32,16 +32,18 @@ class ClosureCompilerTest < Test::Unit::TestCase
     end
     assert result == COMPILED_ADVANCED
   end
-
-  unless RUBY_PLATFORM =~ /mswin|mingw/ # which won't work on windows
     
   def test_jar_and_java_specifiation
     jar = Dir['vendor/closure-compiler-*.jar'].first
-    java = `which java`.strip
-    compiler = Compiler.new(:java => java, :jar_file => jar)
-    assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
-  end
-  
+    unless java = ( `which java` rescue nil )
+      java = `where java` rescue nil # works on newer windows
+    end
+    if java
+      compiler = Compiler.new(:java => java.strip, :jar_file => jar)
+      assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
+    else
+      puts "could not `which/where java` skipping test"
+    end
   end
 
   def test_exceptions
