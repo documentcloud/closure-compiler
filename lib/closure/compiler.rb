@@ -9,12 +9,14 @@ module Closure
   # The Closure::Compiler is a basic wrapper around the actual JAR. There's not
   # much to see here.
   class Compiler
+    
+    DEFAULT_OPTIONS = {:warning_level => 'QUIET'}
 
     # When you create a Compiler, pass in the flags and options.
     def initialize(options={})
       @java     = options.delete(:java)     || JAVA_COMMAND
       @jar      = options.delete(:jar_file) || COMPILER_JAR
-      @options  = serialize_options(options)
+      @options  = serialize_options(DEFAULT_OPTIONS.merge(options))
     end
 
     # Can compile a JavaScript string or open IO object. Returns the compiled
