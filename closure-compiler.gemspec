@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name      = 'closure-compiler'
-  s.version   = '1.1.1'            # Keep version in sync with closure-compiler.rb
-  s.date      = '2011-3-23'
+  s.version   = '1.1.2'            # Keep version in sync with closure-compiler.rb
+  s.date      = '2011-08-12'
 
   s.homepage    = "http://github.com/documentcloud/closure-compiler/"
   s.summary     = "Ruby Wrapper for the Google Closure Compiler"
@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
 
   s.require_paths     = ['lib']
 
-  s.has_rdoc          = true
   s.rdoc_options      << '--title'    << 'Ruby Closure Compiler' <<
                          '--exclude'  << 'test' <<
                          '--all'
