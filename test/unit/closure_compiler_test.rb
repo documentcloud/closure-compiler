@@ -32,21 +32,25 @@ class ClosureCompilerTest < Test::Unit::TestCase
     end
     assert result == COMPILED_ADVANCED
   end
-
+    
   def test_jar_and_java_specifiation
-    if !Closure::Popen::WINDOWS
-      jar = Dir['vendor/closure-compiler-*.jar'].first
-      java = `which java`.strip
-      compiler = Compiler.new(:java => java, :jar_file => jar)
+    jar = Dir['vendor/closure-compiler-*.jar'].first
+    unless java = ( `which java` rescue nil )
+      java = `where java` rescue nil # works on newer windows
+    end
+    if java
+      compiler = Compiler.new(:java => java.strip, :jar_file => jar)
       assert compiler.compress(ORIGINAL) == COMPILED_SIMPLE
+    else
+      puts "could not `which/where java` skipping test"
     end
   end
 
   def test_exceptions
-    assert_raises(Closure::Error) do
+    assert_raise(Closure::Error) do
       Compiler.new.compile('1++')
     end
-    assert_raises(Closure::Error) do
+    assert_raise(Closure::Error) do
       Compiler.new.compile('obj = [1 2, 3]')
     end
   end
@@ -58,6 +62,20 @@ class ClosureCompilerTest < Test::Unit::TestCase
 
   def test_permissions
     assert File.executable?(COMPILER_JAR)
+  end
+
+  def test_serialize_options
+    options = { 'externs' => 'library1.js', "compilation_level" => "ADVANCED_OPTIMIZATIONS" }
+    # ["--externs",  "library1.js", "--compilation_level", "ADVANCED_OPTIMIZATIONS"]
+    # although Hash in 1.8 might change the order to : 
+    # ["--compilation_level", "ADVANCED_OPTIMIZATIONS", "--externs",  "library1.js"]
+    expected_options = options.to_a.map { |arr| [ "--#{arr[0]}", arr[1] ] }.flatten
+    assert_equal expected_options, Closure::Compiler.new.send(:serialize_options, options)
+  end
+  
+  def test_serialize_options_for_arrays
+    compiler = Closure::Compiler.new('externs' => ['library1.js', "library2.js"])
+    assert_equal ["--externs", "library1.js", "--externs", "library2.js"], compiler.send(:serialize_options, 'externs' => ['library1.js', "library2.js"])
   end
 
 end

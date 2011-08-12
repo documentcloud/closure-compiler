@@ -12,5 +12,4 @@ module Closure
 
 end
 
-require 'stringio'
 require 'closure/compiler'
