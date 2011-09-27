@@ -1,3 +1,4 @@
+require 'closure/jar'
 require 'net/http'
 require 'uri'
 
@@ -15,6 +16,10 @@ module Closure
     SEVICE_URI = URI.parse 'http://closure-compiler.appspot.com/compile'
 
     def initialize(options={})
+      # A copy of the original options hash is preserved because it might be
+      # needed to initialize the fallback JAR compiler in case of errors with
+      # the online service.
+      @options_backup = options.clone
       @options = DEFAULT_OPTIONS.merge options
       load_externs if @options['externs']
     end
@@ -29,7 +34,8 @@ module Closure
       begin
         result = query_the_service code
       rescue Exception
-        raise Error, "compression failed"
+        # Retry using the local compiler in case of any problems.
+        result = (@fallback_compiler ||= JAR.new @options_backup).compile code
       end
 
       result
