@@ -1,4 +1,5 @@
 require 'closure/jar'
+require 'closure/online'
 require 'stringio'
 
 module Closure
@@ -10,9 +11,15 @@ module Closure
   # the remote Google's service.
   class Compiler
 
-    # When you create a Compiler, pass in the flags and options.
+    # When you create a Compiler, pass in the flags and options. By default the
+    # local JAR file is used for compilation. Adding `:online => true` to
+    # options makes the Compiler use the online Google's service.
     def initialize(options={})
-      @backend = JAR.new options
+      @backend = if options.delete :online
+                   Online.new options
+                 else
+                   JAR.new options
+                 end
     end
 
     # Can compile a JavaScript string or open IO object. Returns the compiled
