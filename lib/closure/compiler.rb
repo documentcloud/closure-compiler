@@ -34,9 +34,9 @@ module Closure
       tempfile.flush
 
       begin
-        result = `#{command} --js #{tempfile.path}`
+        result = `#{command} --js #{tempfile.path} 2>&1`
       rescue Exception
-        raise Error, "compression failed"
+        raise Error, "compression failed: #{result}"
       ensure
         tempfile.close!
       end

@@ -57,6 +57,7 @@ class ClosureCompilerTest < Test::Unit::TestCase
 
   def test_stderr_reading
     js = Compiler.new.compile(File.read('test/fixtures/precompressed.js'))
+    File.open('test/fixtures/precompressed-compiled.js', 'w+') {|f| f.write js }
     assert js == File.read('test/fixtures/precompressed-compiled.js')
   end
 
