@@ -32,7 +32,7 @@ class ClosureCompilerTest < Test::Unit::TestCase
     end
     assert result == COMPILED_ADVANCED
   end
-    
+
   def test_jar_and_java_specifiation
     jar = Dir['vendor/closure-compiler-*.jar'].first
     unless java = ( `which java` rescue nil )
@@ -68,15 +68,21 @@ class ClosureCompilerTest < Test::Unit::TestCase
   def test_serialize_options
     options = { 'externs' => 'library1.js', "compilation_level" => "ADVANCED_OPTIMIZATIONS" }
     # ["--externs",  "library1.js", "--compilation_level", "ADVANCED_OPTIMIZATIONS"]
-    # although Hash in 1.8 might change the order to : 
+    # although Hash in 1.8 might change the order to :
     # ["--compilation_level", "ADVANCED_OPTIMIZATIONS", "--externs",  "library1.js"]
     expected_options = options.to_a.map { |arr| [ "--#{arr[0]}", arr[1] ] }.flatten
     assert_equal expected_options, Closure::Compiler.new.send(:serialize_options, options)
   end
-  
+
   def test_serialize_options_for_arrays
     compiler = Closure::Compiler.new('externs' => ['library1.js', "library2.js"])
     assert_equal ["--externs", "library1.js", "--externs", "library2.js"], compiler.send(:serialize_options, 'externs' => ['library1.js', "library2.js"])
   end
 
+  def test_compiling_array_of_file_paths
+    files = ['test/fixtures/file1.js', 'test/fixtures/file2.js']
+    result = Closure::Compiler.new().compile_files(files)
+
+    assert_equal result, File.read('test/fixtures/file1-file2-compiled.js')
+  end
 end
