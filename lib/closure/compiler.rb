@@ -9,14 +9,14 @@ module Closure
   # The Closure::Compiler is a basic wrapper around the actual JAR. There's not
   # much to see here.
   class Compiler
-    
+
     DEFAULT_OPTIONS = {:warning_level => 'QUIET'}
 
     # When you create a Compiler, pass in the flags and options.
     def initialize(options={})
       @java     = options.delete(:java)     || JAVA_COMMAND
       @jar      = options.delete(:jar_file) || COMPILER_JAR
-      @options  = serialize_options(DEFAULT_OPTIONS.merge(options))
+      @options  = DEFAULT_OPTIONS.merge(options)
     end
 
     # Can compile a JavaScript string or open IO object. Returns the compiled
@@ -34,14 +34,11 @@ module Closure
       tempfile.flush
 
       begin
-        result = `#{command} --js #{tempfile.path} 2>&1`
-      rescue Exception
-        raise Error, "compression failed: #{result}"
+        result = compile_files(tempfile.path)
+      rescue Exception => e
+        raise e
       ensure
         tempfile.close!
-      end
-      unless $?.exitstatus.zero?
-        raise Error, result
       end
 
       yield(StringIO.new(result)) if block_given?
@@ -49,6 +46,26 @@ module Closure
     end
     alias_method :compress, :compile
 
+    # Takes an array of javascript file paths or a single path. Returns the
+    # resulting JavaScript as a string or yields an IO object containing the
+    # response to a block, for streaming.
+    def compile_files(files)
+      @options.merge!({js: files})
+
+      begin
+        result = `#{command} 2>&1`
+      rescue Exception
+        raise Error, "compression failed: #{result}"
+      end
+
+      unless $?.exitstatus.zero?
+        raise Error, result
+      end
+
+      yield(StringIO.new(result)) if block_given?
+      result
+    end
+    alias_method :compile_file, :compile_files
 
     private
 
@@ -64,7 +81,7 @@ module Closure
     end
 
     def command
-      [@java, '-jar', "\"#{@jar}\"", @options].flatten.join(' ')
+      [@java, '-jar', "\"#{@jar}\"", serialize_options(@options)].flatten.join(' ')
     end
 
   end
