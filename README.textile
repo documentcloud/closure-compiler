@@ -4,7 +4,7 @@ The *closure-compiler* gem is a svelte wrapper around the "Google Closure Compil
 
 Latest Version: *"1.1.7":http://rubygems.org/gems/closure-compiler*
 
-The Closure Compiler's *2012-07-25* JAR-file is included with the gem.
+The Closure Compiler's *2012-09-17* JAR-file is included with the gem.
 
 h2. Installation
 
@@ -14,12 +14,22 @@ sudo gem install closure-compiler
   
 h2. Usage
 
-The @Closure::Compiler@ has a single method, @compile@, which can be passed a string or an open @IO@ object, and returns the compiled JavaScript. The result is returned as a string, or, if a block is passed, yields as an @IO@ object for streaming writes.
+The @Closure::Compiler@ has a @compile@ method, which can be passed a string or an open @IO@ object, and returns the compiled JavaScript. The result is returned as a string, or, if a block is passed, yields as an @IO@ object for streaming writes.
 
 <pre>
 require 'rubygems'
 require 'closure-compiler'
 Closure::Compiler.new.compile(File.open('underscore.js', 'r'))
+
+=> "(function(){var j=this,m=j._;function i(a){......
+</pre>
+
+The @Closure::Compiler@ also has @compile_file@ and @compile_files@ methods, which can be passed a file path or an array of file paths respectively. The files are concatenated and compiled and, like the @compile@ method, the result is returned as a string or, if block is passed, yields an @IO@ object.
+
+<pre>
+require 'rubygems'
+require 'closure-compiler'
+Closure::Compiler.new.compile_files(['underscore.js', 'jasmine.js']))
 
 => "(function(){var j=this,m=j._;function i(a){......
 </pre>
