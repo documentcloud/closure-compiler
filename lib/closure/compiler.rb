@@ -9,8 +9,11 @@ module Closure
   # The Closure::Compiler is a basic wrapper around the actual JAR. There's not
   # much to see here.
   class Compiler
-
-    DEFAULT_OPTIONS = {:warning_level => 'QUIET'}
+    
+    DEFAULT_OPTIONS = {
+      :warning_level => 'QUIET',
+      :language_in => 'ECMASCRIPT5'
+    }
 
     # When you create a Compiler, pass in the flags and options.
     def initialize(options={})
