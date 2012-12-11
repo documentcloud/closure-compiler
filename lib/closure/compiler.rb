@@ -50,7 +50,7 @@ module Closure
     # resulting JavaScript as a string or yields an IO object containing the
     # response to a block, for streaming.
     def compile_files(files)
-      @options.merge!({js: files})
+      @options.merge!(:js => files)
 
       begin
         result = `#{command} 2>&1`
