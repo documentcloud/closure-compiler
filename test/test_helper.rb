@@ -1,3 +1,5 @@
+require 'rubygems'
+
 if begin
     Gem::Specification::find_by_name 'redgreen'
   rescue Gem::LoadError

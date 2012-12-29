@@ -2,16 +2,16 @@ h1. The Closure Compiler (as a Ruby Gem)
 
 The *closure-compiler* gem is a svelte wrapper around the "Google Closure Compiler":http://code.google.com/closure/compiler/ for JavaScript compression.
 
-Latest Version: *"1.1.7":http://rubygems.org/gems/closure-compiler*
+Latest Version: *"1.1.8":http://rubygems.org/gems/closure-compiler*
 
-The Closure Compiler's *2012-09-17* JAR-file is included with the gem.
+The Closure Compiler's *2012-12-12* JAR-file is included with the gem.
 
 h2. Installation
 
 <pre>
 sudo gem install closure-compiler
 </pre>
-  
+
 h2. Usage
 
 The @Closure::Compiler@ has a @compile@ method, which can be passed a string or an open @IO@ object, and returns the compiled JavaScript. The result is returned as a string, or, if a block is passed, yields as an @IO@ object for streaming writes.
@@ -33,13 +33,13 @@ Closure::Compiler.new.compile_files(['underscore.js', 'jasmine.js']))
 
 => "(function(){var j=this,m=j._;function i(a){......
 </pre>
-    
+
 When creating a @Closure::Compiler@, you can pass "any options that the command-line compiler accepts":http://code.google.com/closure/compiler/docs/gettingstarted_app.html to the initializer and they'll be forwarded. For example, to raise the compilation level up a notch:
 
 <pre>
 closure = Closure::Compiler.new(:compilation_level => 'ADVANCED_OPTIMIZATIONS')
 closure.compile(File.open('underscore.js', 'r'))
-  
+
 => "(function(){var j=this,m=j.h;function i(a){......
 </pre>
 
