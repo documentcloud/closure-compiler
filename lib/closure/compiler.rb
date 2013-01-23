@@ -9,6 +9,8 @@ module Closure
   # The Closure::Compiler is a basic wrapper around the actual JAR. There's not
   # much to see here.
   class Compiler
+
+    attr_accessor :options
     
     DEFAULT_OPTIONS = {
       :warning_level => 'QUIET',
