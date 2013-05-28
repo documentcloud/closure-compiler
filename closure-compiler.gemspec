@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name      = 'closure-compiler'
-  s.version   = '1.1.9'            # Keep version in sync with closure-compiler.rb
-  s.date      = '2013-04-11'
+  s.version   = '1.1.10'            # Keep version in sync with closure-compiler.rb
+  s.date      = '2013-05-28'
 
   s.homepage    = "http://github.com/documentcloud/closure-compiler/"
   s.summary     = "Ruby Wrapper for the Google Closure Compiler"
@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "closure-compiler"
   s.authors           = ['Jeremy Ashkenas', 'Jordan Brough']
-  s.email             = 'jeremy@documentcloud.org'
+  s.email             = 'opensource@documentcloud.org'
 
   s.require_paths     = ['lib']
 
