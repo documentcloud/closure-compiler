@@ -57,14 +57,19 @@ module Closure
     def compile_files(files)
       @options.merge!(:js => files)
 
-      begin
-        result = `#{command} 2>&1`
-      rescue Exception
-        raise Error, "compression failed: #{result}"
-      end
+      if defined?(JRUBY_VERSION)
+        args = serialize_options(@options)
+        result = JRubyRunner.run(args)
+      else
+        begin
+          result = `#{command} 2>&1`
+        rescue Exception
+          raise Error, "compression failed: #{result}"
+        end
 
-      unless $?.exitstatus.zero?
-        raise Error, result
+        unless $?.exitstatus.zero?
+          raise Error, result
+        end
       end
 
       yield(StringIO.new(result)) if block_given?
