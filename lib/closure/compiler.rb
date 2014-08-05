@@ -11,7 +11,7 @@ module Closure
   class Compiler
 
     attr_accessor :options
-    
+
     DEFAULT_OPTIONS = {
       :warning_level => 'QUIET',
       :language_in => 'ECMASCRIPT5'
@@ -58,7 +58,8 @@ module Closure
       @options.merge!(:js => files)
 
       begin
-        result = `#{command} 2>&1`
+        redirect_stderr = "2>&1" if !Gem.win_platform?
+        result = `#{command} #{redirect_stderr}`
       rescue Exception
         raise Error, "compression failed: #{result}"
       end
