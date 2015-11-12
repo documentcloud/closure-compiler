@@ -1,2 +1,3 @@
 .yardoc
 *.gem
+.DS_Store
