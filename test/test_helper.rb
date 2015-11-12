@@ -13,6 +13,6 @@ require 'minitest/autorun'
 
 require 'closure-compiler'
 
-class MiniTest::Unit::TestCase
+class Minitest::Test
   include Closure
 end

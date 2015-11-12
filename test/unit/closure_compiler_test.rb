@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ClosureCompilerTest < MiniTest::Unit::TestCase
+class ClosureCompilerTest < Minitest::Test
 
   ORIGINAL            = "window.hello = function(name) { return console.log('hello ' + name ); }; hello.squared = function(num) { return num * num; }; hello('world');"
 
@@ -47,10 +47,10 @@ class ClosureCompilerTest < MiniTest::Unit::TestCase
   end
 
   def test_exceptions
-    assert_raise(Closure::Error) do
+    assert_raises(Closure::Error) do
       Compiler.new.compile('1++')
     end
-    assert_raise(Closure::Error) do
+    assert_raises(Closure::Error) do
       Compiler.new.compile('obj = [1 2, 3]')
     end
   end
