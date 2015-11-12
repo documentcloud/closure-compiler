@@ -4,7 +4,7 @@ The *closure-compiler* gem is a svelte wrapper around the "Google Closure Compil
 
 Latest Version: *"1.1.11":http://rubygems.org/gems/closure-compiler*
 
-The Closure Compiler's *2014-07-30* JAR-file is included with the gem.
+The Closure Compiler's *2015-10-15* JAR-file is included with the gem.
 
 h2. Installation
 
