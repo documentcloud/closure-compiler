@@ -9,10 +9,10 @@ if begin
   end
   require 'redgreen' if RUBY_VERSION < "1.9"
 end
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'closure-compiler'
 
-class Test::Unit::TestCase
+class MiniTest::Unit::TestCase
   include Closure
 end

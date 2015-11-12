@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ClosureCompilerTest < Test::Unit::TestCase
+class ClosureCompilerTest < MiniTest::Unit::TestCase
 
   ORIGINAL            = "window.hello = function(name) { return console.log('hello ' + name ); }; hello.squared = function(num) { return num * num; }; hello('world');"
 
