@@ -1,6 +1,6 @@
 module Closure
 
-  VERSION           = "1.1.11"
+  VERSION           = "1.1.12"
 
   COMPILER_VERSION  = "20151015"
 
