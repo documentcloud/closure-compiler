@@ -1,3 +1,4 @@
+require 'open3'
 require 'stringio'
 require 'tempfile'
 
@@ -55,21 +56,17 @@ module Closure
     # resulting JavaScript as a string or yields an IO object containing the
     # response to a block, for streaming.
     def compile_files(files)
-      @options.merge!(:js => files)
+      stdout, stderr, status = Open3::capture3 *command(js: files)
 
-      begin
-        redirect_stderr = "2>&1" if !Gem.win_platform?
-        result = `#{command} #{redirect_stderr}`
-      rescue Exception
-        raise Error, "compression failed: #{result}"
+      unless status == 0
+        raise Error, stderr
       end
 
-      unless $?.exitstatus.zero?
-        raise Error, result
-      end
+      # Let them see the warnings.
+      $stderr.write stderr
 
-      yield(StringIO.new(result)) if block_given?
-      result
+      yield(StringIO.new(stdout)) if block_given?
+      stdout
     end
     alias_method :compile_file, :compile_files
 
@@ -86,8 +83,8 @@ module Closure
       end.flatten
     end
 
-    def command
-      [@java, '-jar', "\"#{@jar}\"", serialize_options(@options)].flatten.join(' ')
+    def command(**options)
+      %W(#@java -jar #@jar) + serialize_options(@options.merge(options))
     end
 
   end
