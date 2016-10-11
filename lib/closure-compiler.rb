@@ -13,3 +13,5 @@ module Closure
 end
 
 require 'closure/compiler'
+require 'closure/jruby' if defined?(JRUBY_VERSION)
+
