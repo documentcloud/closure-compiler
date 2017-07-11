@@ -1,4 +1,4 @@
-require 'lib/closure-compiler'
+require File.expand_path('lib/closure-compiler', File.dirname(__FILE__))
 
 Gem::Specification.new do |s|
   s.name      = 'closure-compiler'
