@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'lib', 'closure-compiler')
 Gem::Specification.new do |s|
   s.name      = 'closure-compiler'
   s.version   = Closure::VERSION
-  s.date      = '2017-05-21'
+  s.date      = '2017-06-26'
   s.license   = 'Apache-2.0'
 
   s.homepage    = "http://github.com/documentcloud/closure-compiler/"
