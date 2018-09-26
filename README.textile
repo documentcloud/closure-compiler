@@ -14,6 +14,20 @@ sudo gem install closure-compiler
 
 h2. Usage
 
+h3. Rails
+
+In `config/environments/production.rb`:
+<pre>
+config.assets.js_compressor = Closure::Compiler.new
+</pre>
+
+Specifically for ECMAScript6 support, use this instead:
+<pre>
+config.assets.js_compressor = Closure::Compiler.new(language_in: 'ECMASCRIPT6')
+</pre>
+
+h3. General
+
 The @Closure::Compiler@ has a @compile@ method, which can be passed a string or an open @IO@ object, and returns the compiled JavaScript. The result is returned as a string, or, if a block is passed, yields as an @IO@ object for streaming writes.
 
 <pre>
