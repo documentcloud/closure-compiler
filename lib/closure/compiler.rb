@@ -55,6 +55,11 @@ module Closure
     # resulting JavaScript as a string or yields an IO object containing the
     # response to a block, for streaming.
     def compile_files(files)
+      if (files.is_a?(Array))
+        files = files.map { |file| '"' + file + '"' }
+      else
+        files = '"' + files + '"'
+      end
       @options.merge!(:js => files)
 
       begin
