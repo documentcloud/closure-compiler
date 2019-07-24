@@ -2,9 +2,9 @@ h1. The Closure Compiler (as a Ruby Gem)
 
 The *closure-compiler* gem is a svelte wrapper around the "Google Closure Compiler":https://developers.google.com/closure/compiler/ for JavaScript compression.
 
-Latest Version: *"1.1.14":https://rubygems.org/gems/closure-compiler*
+Latest Version: *"1.1.15":https://rubygems.org/gems/closure-compiler*
 
-The Closure Compiler's *2018-05-06* JAR-file is included with the gem.
+The Closure Compiler's *2019-07-09* JAR-file is included with the gem.
 
 h2. Installation
 
