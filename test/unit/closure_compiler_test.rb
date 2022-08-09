@@ -17,22 +17,22 @@ class ClosureCompilerTest < Minitest::Test
   EOS
 
   COMPILED_ADVANCED = <<-EOS.strip
-    window.a=function(b){return console.log("hello "+b)};window.a.b=function(b){return b*b};window.a("world");
+    window.g=function(){console.log(\"hello world\")};window.g.h=function(a){return a*a};window.g();
   EOS
 
   def test_whitespace_compression
     js = Compiler.new(:compilation_level => "WHITESPACE_ONLY").compile(ORIGINAL).strip
-    assert_equal js, COMPILED_WHITESPACE
+    assert_equal COMPILED_WHITESPACE, js
   end
 
   def test_simple_compression
     js = Compiler.new.compile(ORIGINAL).strip
-    assert_equal js, COMPILED_SIMPLE
+    assert_equal COMPILED_SIMPLE, js
   end
 
   def test_advanced_compression
     js = Compiler.new(:compilation_level => "ADVANCED_OPTIMIZATIONS").compile(ORIGINAL).strip
-    assert_equal js, COMPILED_ADVANCED
+    assert_equal COMPILED_ADVANCED, js
   end
 
   def test_block_syntax
@@ -42,7 +42,7 @@ class ClosureCompilerTest < Minitest::Test
         result << buffer
       end
     end
-    assert_equal result.strip, COMPILED_ADVANCED
+    assert_equal COMPILED_ADVANCED, result.strip
   end
 
   def test_jar_and_java_specifiation
@@ -52,7 +52,7 @@ class ClosureCompilerTest < Minitest::Test
     end
     if java
       compiler = Compiler.new(:java => java.strip, :jar_file => jar)
-      assert_equal compiler.compress(ORIGINAL).strip, COMPILED_SIMPLE
+      assert_equal COMPILED_SIMPLE, compiler.compress(ORIGINAL).strip
     else
       puts "could not `which/where java` skipping test"
     end
@@ -94,6 +94,6 @@ class ClosureCompilerTest < Minitest::Test
     files = ['test/fixtures/file1.js', 'test/fixtures/file2.js']
     result = Closure::Compiler.new().compile_files(files)
 
-    assert_equal result, File.read('test/fixtures/file1-file2-compiled.js')
+    assert_equal File.read('test/fixtures/file1-file2-compiled.js'), result
   end
 end

@@ -14,7 +14,8 @@ module Closure
 
     DEFAULT_OPTIONS = {
       :warning_level => 'QUIET',
-      :language_in => 'ECMASCRIPT5'
+      :language_in => 'ECMASCRIPT5',
+      :language_out => 'ECMASCRIPT5'
     }
 
     # When you create a Compiler, pass in the flags and options.

@@ -1,8 +1,8 @@
 module Closure
 
-  VERSION           = "1.1.14"
+  VERSION           = "1.1.20"
 
-  COMPILER_VERSION  = "20180506"
+  COMPILER_VERSION  = "v20211201"
 
   JAVA_COMMAND      = 'java'
 
@@ -12,4 +12,4 @@ module Closure
 
 end
 
-require 'closure/compiler'
+require_relative 'closure/compiler'
